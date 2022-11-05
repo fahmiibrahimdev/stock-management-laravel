@@ -6,7 +6,9 @@ use App\Http\Livewire\Master\DataBarang;
 use App\Http\Livewire\Master\DataCb;
 use App\Http\Livewire\Master\Kategori;
 use App\Http\Livewire\Master\Satuan;
+use App\Http\Livewire\Persediaan\BarangKeluar;
 use App\Http\Livewire\Persediaan\BarangMasuk;
+use App\Http\Livewire\Persediaan\DaftarStock;
 use App\Http\Livewire\SettingUser\SettingUser;
 
 /*
@@ -34,6 +36,8 @@ Route::group(['middleware' => ['auth', 'role:supervisor']], function() {
     Route::get('master/kategori/', Kategori::class)->name('master.kategori');
     Route::get('master/satuan/', Satuan::class)->name('master.satuan');
     Route::get('persediaan/barang-masuk/', BarangMasuk::class)->name('persediaan.barang-masuk');
+    Route::get('persediaan/barang-keluar/', BarangKeluar::class)->name('persediaan.barang-keluar');
+    Route::get('persediaan/daftar-stock/', DaftarStock::class)->name('persediaan.daftar-stock');
     Route::get('setting-user/', SettingUser::class)->name('setting-user.index');
 });
 

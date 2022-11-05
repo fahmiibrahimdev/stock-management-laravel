@@ -16,6 +16,7 @@ class DataBarang extends Component
         'deleteConfirmed' => 'delete',
     ];
     public $nama_barang, $id_kategori, $id_cb, $id_satuan, $stock;
+    public $filter_id_kategori, $filter_id_cb;
     public $searchTerm, $lengthData;
     public $updateMode = false;
     public $idRemoved = null;
@@ -27,6 +28,9 @@ class DataBarang extends Component
         $this->id_kategori = Kategori::min('id');
         $this->id_cb = DataCb::min('id');
         $this->id_satuan = Satuan::min('id');
+
+        $this->filter_id_kategori = 0;
+        $this->filter_id_cb = 0;
     }
 
     public function cancel()
@@ -45,19 +49,69 @@ class DataBarang extends Component
         $searchTerm = '%'.$this->searchTerm.'%';
 		$lengthData = $this->lengthData;
 
-        $data = ModelsDataBarang::select('data_barang.id', 'data_barang.nama_barang', 'data_barang.stock', 'kategori.nama_kategori', 'data_cb.nama_cb', 'satuan.nama_satuan')
-                    ->join('kategori', 'kategori.id', 'data_barang.id_kategori')
-                    ->join('data_cb', 'data_cb.id', 'data_barang.id_cb')
-                    ->join('satuan', 'satuan.id', 'data_barang.id_satuan')
-                    ->where(function($query) use ($searchTerm) {
-                        $query->where('data_barang.nama_barang', 'LIKE', $searchTerm);
-                        $query->orWhere('data_barang.stock', 'LIKE', $searchTerm);
-                        $query->orWhere('kategori.nama_kategori', 'LIKE', $searchTerm);
-                        $query->orWhere('data_cb.nama_cb', 'LIKE', $searchTerm);
-                        $query->orWhere('satuan.nama_satuan', 'LIKE', $searchTerm);
-                    })
-				    ->orderBy('data_barang.id', 'ASC')
-				    ->paginate($lengthData);
+        if( $this->filter_id_kategori == 0 && $this->filter_id_cb == 0) {
+            $data = ModelsDataBarang::select('data_barang.id', 'data_barang.nama_barang', 'data_barang.stock', 'kategori.nama_kategori', 'data_cb.nama_cb', 'satuan.nama_satuan')
+            ->join('kategori', 'kategori.id', 'data_barang.id_kategori')
+            ->join('data_cb', 'data_cb.id', 'data_barang.id_cb')
+            ->join('satuan', 'satuan.id', 'data_barang.id_satuan')
+            ->where(function($query) use ($searchTerm) {
+                $query->where('data_barang.nama_barang', 'LIKE', $searchTerm);
+                $query->orWhere('data_barang.stock', 'LIKE', $searchTerm);
+                $query->orWhere('kategori.nama_kategori', 'LIKE', $searchTerm);
+                $query->orWhere('data_cb.nama_cb', 'LIKE', $searchTerm);
+                $query->orWhere('satuan.nama_satuan', 'LIKE', $searchTerm);
+            })
+            ->orderBy('data_barang.id', 'ASC')
+            ->paginate($lengthData ?? 5);
+        } else if ( $this->filter_id_kategori > 0 && $this->filter_id_cb == 0 ) {
+            $data = ModelsDataBarang::select('data_barang.id', 'data_barang.nama_barang', 'data_barang.stock', 'kategori.nama_kategori', 'data_cb.nama_cb', 'satuan.nama_satuan')
+            ->join('kategori', 'kategori.id', 'data_barang.id_kategori')
+            ->join('data_cb', 'data_cb.id', 'data_barang.id_cb')
+            ->join('satuan', 'satuan.id', 'data_barang.id_satuan')
+            ->where('kategori.id', $this->filter_id_kategori)
+            ->where(function($query) use ($searchTerm) {
+                $query->where('data_barang.nama_barang', 'LIKE', $searchTerm);
+                $query->orWhere('data_barang.stock', 'LIKE', $searchTerm);
+                $query->orWhere('kategori.nama_kategori', 'LIKE', $searchTerm);
+                $query->orWhere('data_cb.nama_cb', 'LIKE', $searchTerm);
+                $query->orWhere('satuan.nama_satuan', 'LIKE', $searchTerm);
+            })
+            ->orderBy('data_barang.id', 'ASC')
+            ->paginate($lengthData ?? 5);
+        } else if ( $this->filter_id_kategori == 0 && $this->filter_id_cb > 0 ) {
+            $data = ModelsDataBarang::select('data_barang.id', 'data_barang.nama_barang', 'data_barang.stock', 'kategori.nama_kategori', 'data_cb.nama_cb', 'satuan.nama_satuan')
+            ->join('kategori', 'kategori.id', 'data_barang.id_kategori')
+            ->join('data_cb', 'data_cb.id', 'data_barang.id_cb')
+            ->join('satuan', 'satuan.id', 'data_barang.id_satuan')
+            ->where('data_cb.id', $this->filter_id_cb)
+            ->where(function($query) use ($searchTerm) {
+                $query->where('data_barang.nama_barang', 'LIKE', $searchTerm);
+                $query->orWhere('data_barang.stock', 'LIKE', $searchTerm);
+                $query->orWhere('kategori.nama_kategori', 'LIKE', $searchTerm);
+                $query->orWhere('data_cb.nama_cb', 'LIKE', $searchTerm);
+                $query->orWhere('satuan.nama_satuan', 'LIKE', $searchTerm);
+            })
+            ->orderBy('data_barang.id', 'ASC')
+            ->paginate($lengthData ?? 5);
+        } else if ( $this->filter_id_kategori > 0 && $this->filter_id_cb > 0 ) {
+            $data = ModelsDataBarang::select('data_barang.id', 'data_barang.nama_barang', 'data_barang.stock', 'kategori.nama_kategori', 'data_cb.nama_cb', 'satuan.nama_satuan')
+            ->join('kategori', 'kategori.id', 'data_barang.id_kategori')
+            ->join('data_cb', 'data_cb.id', 'data_barang.id_cb')
+            ->join('satuan', 'satuan.id', 'data_barang.id_satuan')
+            ->where('kategori.id', $this->filter_id_kategori)
+            ->where('data_cb.id', $this->filter_id_cb)
+            ->where(function($query) use ($searchTerm) {
+                $query->where('data_barang.nama_barang', 'LIKE', $searchTerm);
+                $query->orWhere('data_barang.stock', 'LIKE', $searchTerm);
+                $query->orWhere('kategori.nama_kategori', 'LIKE', $searchTerm);
+                $query->orWhere('data_cb.nama_cb', 'LIKE', $searchTerm);
+                $query->orWhere('satuan.nama_satuan', 'LIKE', $searchTerm);
+            })
+            ->orderBy('data_barang.id', 'ASC')
+            ->paginate($lengthData ?? 5);
+        }
+
+        
 
         $kategoris  = Kategori::select('id', 'nama_kategori')->get();
         $cbs        = DataCb::select('id', 'nama_cb', 'keterangan')->get();

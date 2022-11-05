@@ -1,5 +1,5 @@
 <div>
-    <div class="section-header tw-rounded-lg tw-text-black">
+    <div class="section-header tw-rounded-lg tw-text-black tw-shadow-md">
         <h4 class="tw-text-lg">Dashboard</h4>
     </div>
 

@@ -2,9 +2,10 @@
 
 namespace App\Http\Livewire\Persediaan;
 
+use Carbon\Carbon;
+use Livewire\Component;
 use App\Models\DataBarang;
 use App\Models\StockManage;
-use Livewire\Component;
 use Livewire\WithPagination;
 
 class BarangMasuk extends Component
@@ -14,6 +15,7 @@ class BarangMasuk extends Component
         'deleteConfirmed' => 'delete',
     ];
     public $tanggal, $id_barang, $qty, $keterangan;
+    public $filter_dari_tanggal, $filter_sampai_tanggal, $filter_id_barang;
     public $searchTerm, $lengthData;
     public $updateMode = false;
     public $idRemoved = null;
@@ -25,6 +27,9 @@ class BarangMasuk extends Component
         $this->id_barang = DataBarang::min('id');
         $this->qty = '1';
         $this->keterangan = '-';
+        $this->filter_dari_tanggal = Carbon::now()->startOfMonth()->format('Y-m-d');
+        $this->filter_sampai_tanggal = Carbon::now()->endOfMonth()->format('Y-m-d');
+        $this->filter_id_barang = 0;
     }
 
     public function cancel()
@@ -36,8 +41,46 @@ class BarangMasuk extends Component
     private function resetInputFields()
     {
         $this->tanggal = date('Y-m-d H:i');
-        $this->id_barang = DataBarang::min('id');
         $this->qty = '1';
+    }
+
+    private function alertStockMinus() {
+        $this->dispatchBrowserEvent('swal:modal', [
+            'type' => 'error',  
+            'message' => 'Gagal!', 
+            'text' => 'Stock minus tidak diperbolehkan!.'
+        ]);
+        return false;
+    }
+
+    private function alertSuccessInsert() {
+        $this->resetInputFields();
+        $this->dispatchBrowserEvent('swal:modal', [
+            'type' => 'success',  
+            'message' => 'Berhasil!', 
+            'text' => 'Data Berhasil Dibuat!.'
+        ]);
+        $this->emit('dataStore');
+    }
+
+    private function alertSuccessUpdate() {
+        $this->updateMode = false;
+        $this->dispatchBrowserEvent('swal:modal', [
+            'type' => 'success',  
+            'message' => 'Berhasil!', 
+            'text' => 'Data berhasil diubah!.'
+        ]);
+        $this->resetInputFields();
+        $this->emit('dataStore');
+    }
+
+    private function validateInput() {
+        $this->validate([
+            'tanggal'       => 'required',
+            'id_barang'     => 'required',
+            'qty'           => 'required',
+            'keterangan'    => 'required',
+        ]);
     }
 
     public function render()
@@ -46,17 +89,36 @@ class BarangMasuk extends Component
 		$lengthData = $this->lengthData;
         $barangs = DataBarang::select('id', 'nama_barang')->get();
 
-        $data = StockManage::select('stock_manages.*', 'data_barang.nama_barang')
-                    ->join('data_barang', 'data_barang.id', 'stock_manages.id_barang')
-                    ->where(function($query) use ($searchTerm) {
-                        $query->where('data_barang.nama_barang', 'LIKE', $searchTerm);
-                        $query->orWhere('stock_manages.tanggal', 'LIKE', $searchTerm);
-                        $query->orWhere('stock_manages.qty', 'LIKE', $searchTerm);
-                        $query->orWhere('stock_manages.keterangan', 'LIKE', $searchTerm);
-                    })
-                    ->where('stock_manages.status', 'In')
-				    ->orderBy('stock_manages.id', 'DESC')
-				    ->paginate($lengthData);
+        if( $this->filter_id_barang == 0 ) {
+            $data = StockManage::select('stock_manages.*', 'data_barang.nama_barang')
+            ->join('data_barang', 'data_barang.id', 'stock_manages.id_barang')
+            ->where(function($query) use ($searchTerm) {
+                $query->where('data_barang.nama_barang', 'LIKE', $searchTerm);
+                $query->orWhere('stock_manages.tanggal', 'LIKE', $searchTerm);
+                $query->orWhere('stock_manages.qty', 'LIKE', $searchTerm);
+                $query->orWhere('stock_manages.keterangan', 'LIKE', $searchTerm);
+            })
+            ->whereBetween('stock_manages.created_at', [$this->filter_dari_tanggal, $this->filter_sampai_tanggal])
+            ->where('stock_manages.status', 'In')
+            ->orderBy('stock_manages.id', 'DESC')
+            ->paginate($lengthData ?? 5);
+        } else if ( $this->filter_id_barang > 0 ) {
+            $data = StockManage::select('stock_manages.*', 'data_barang.nama_barang')
+            ->join('data_barang', 'data_barang.id', 'stock_manages.id_barang')
+            ->where(function($query) use ($searchTerm) {
+                $query->where('data_barang.nama_barang', 'LIKE', $searchTerm);
+                $query->orWhere('stock_manages.tanggal', 'LIKE', $searchTerm);
+                $query->orWhere('stock_manages.qty', 'LIKE', $searchTerm);
+                $query->orWhere('stock_manages.keterangan', 'LIKE', $searchTerm);
+            })
+            ->where('data_barang.id', $this->filter_id_barang)
+            ->whereBetween('stock_manages.created_at', [$this->filter_dari_tanggal, $this->filter_sampai_tanggal])
+            ->where('stock_manages.status', 'In')
+            ->orderBy('stock_manages.id', 'DESC')
+            ->paginate($lengthData ?? 5);
+        }
+
+        
 
         return view('livewire.persediaan.barang-masuk', compact('data', 'barangs'))
         ->extends('layouts.apps', ['title' => 'Persediaan - Barang Masuk']);
@@ -64,32 +126,24 @@ class BarangMasuk extends Component
 
     public function store()
     {
-        $this->validate([
-            'tanggal'       => 'required',
-            'id_barang'     => 'required',
-            'qty'           => 'required',
-            'keterangan'    => 'required',
-        ]);
-        StockManage::create([
-            'tanggal'       => $this->tanggal,
-            'id_barang'     => $this->id_barang,
-            'qty'           => $this->qty,
-            'keterangan'    => $this->keterangan,
-            'status'        => 'In',
-        ]);
-
+        $this->validateInput();
+        
         $stock_terakhir_barang = DataBarang::where('id', $this->id_barang)->first()->stock;
         $tambah_stock = $stock_terakhir_barang + $this->qty;
-        
-        $update_stock_barang = DataBarang::where('id', $this->id_barang)->update(array('stock' => $tambah_stock));
 
-        $this->resetInputFields();
-        $this->dispatchBrowserEvent('swal:modal', [
-            'type' => 'success',  
-            'message' => 'Berhasil!', 
-            'text' => 'Data Berhasil Dibuat!.'
-        ]);
-        $this->emit('dataStore');
+        if( $tambah_stock < 0 ) { // jika stock pengurangan minus
+            $this->alertStockMinus();
+        } else { // jika stock pengurangan tidak minus
+            StockManage::create([
+                'tanggal'       => $this->tanggal,
+                'id_barang'     => $this->id_barang,
+                'qty'           => $this->qty,
+                'keterangan'    => $this->keterangan,
+                'status'        => 'In',
+            ]);
+            $update_stock_barang = DataBarang::where('id', $this->id_barang)->update(array('stock' => $tambah_stock));
+            $this->alertSuccessInsert();
+        }
     }
 
     public function edit($id)
@@ -105,12 +159,30 @@ class BarangMasuk extends Component
 
     public function update()
     {
-        $this->validate([
-            'tanggal'       => 'required',
-            'id_barang'     => 'required',
-            'qty'           => 'required',
-            'keterangan'    => 'required',
-        ]);
+        $this->validateInput();
+
+        $id_barang = StockManage::where('id', $this->dataId)->first()->id_barang; // ambil id barang
+        $total_stock_sekarang = DataBarang::where('id', $id_barang)->first()->stock; // Stock di tb data_barang : 20
+        $qty_lama = StockManage::where('id', $this->dataId)->first()->qty; // Quantity Lama : 7
+        $qty_baru = $this->qty; // Quantity Baru : 10
+
+        if( (int)$qty_baru > (int)$qty_lama ) { // jika 10 > 7
+            $total = $qty_baru - $qty_lama; // 10 - 7 = 3
+            $total_stock = $total_stock_sekarang + $total; // 20 + 3 = 23
+            if( $total_stock < 0 ) { // jika stock minus
+                $this->alertStockMinus();
+            } else { // jika stock tidak minus
+                DataBarang::where('id', $id_barang)->update(array('stock' => $total_stock));
+            }
+        } else if ( (int)$qty_lama > (int)$qty_baru ) {
+            $total = $qty_baru - $qty_lama; // 1 - 2 = -1
+            $total_stock = $total_stock_sekarang + $total; // 20 + (-2) = 18
+            if( $total_stock < 0 ) { // jika stock minus
+                $this->alertStockMinus();
+            } else { // jika stock tidak minus
+                DataBarang::where('id', $id_barang)->update(array('stock' => $total_stock));
+            }
+        }
 
         if ($this->dataId) {
             $data = StockManage::findOrFail($this->dataId);
@@ -121,14 +193,7 @@ class BarangMasuk extends Component
                 'keterangan'    => $this->keterangan,
                 'status'        => 'In',
             ]);
-            $this->updateMode = false;
-            $this->dispatchBrowserEvent('swal:modal', [
-                'type' => 'success',  
-                'message' => 'Berhasil!', 
-                'text' => 'Data berhasil diubah!.'
-            ]);
-            $this->resetInputFields();
-            $this->emit('dataStore');
+            $this->alertSuccessUpdate();
         }
     }
 
@@ -144,9 +209,9 @@ class BarangMasuk extends Component
         $id_barang = StockManage::where('id', $this->idRemoved)->first()->id_barang;
         $stock_terakhir = DataBarang::where('id', $id_barang)->first()->stock; // Stock : 10
 
-        $stock_terakhir = $stock_terakhir - $qty_terakhir;
+        $total_stock = $stock_terakhir - $qty_terakhir;
 
-        DataBarang::where('id', $id_barang)->update(array('stock' => $stock_terakhir));
+        DataBarang::where('id', $id_barang)->update(array('stock' => $total_stock));
 
         $data = StockManage::findOrFail($this->idRemoved);
         $data->delete();

@@ -1,16 +1,16 @@
 <div>
-    <div class="section-header tw-rounded-lg tw-text-black">
+    <div class="section-header tw-rounded-lg tw-text-black tw-shadow-md">
         <h4 class="tw-text-lg">Satuan</h4>
     </div>
     <div class="section-body">
         <div class="row">
             <div class="col-lg-3 tw-hidden">
-                <div class="card tw-rounded-md">
+                <div class="card tw-rounded-md tw-shadow-md">
                     <div class="card-body">
                         <form>
                             <div class="form-group">
                                 <label for="nama_satuan">Nama Satuan</label>
-                                <input type="text" class="form-control" wire:model='nama_satuan' id="nama_satuan">
+                                <input type="text" class="form-control tw-rounded-lg" wire:model='nama_satuan' id="nama_satuan">
                             </div>
                             <button type="submit" wire:click.prevent="store()" wire:loading.attr="disabled"
                             class="btn btn-outline-success form-control">Save Data</button>
@@ -20,10 +20,10 @@
             </div>
             <div class="col-lg-9">
                 <div class="card card-primary tw-rounded-md">
-                    <div class="card-body px-0">
+                    <div class="card-body px-0 tw-shadow-md">
                         <div class="row mb-3 px-4">
                             <div class="col-4 col-lg-2 tw-flex">
-                                <select class="form-control" wire:model='lengthData'>
+                                <select class="form-control tw-rounded-lg" wire:model='lengthData'>
                                     <option value="0" selected>All</option>
                                     <option value="1" selected>1</option>
                                     <option value="5">5</option>
@@ -37,7 +37,7 @@
                             </div>
                             <div class="col-8 col-lg-4 ml-auto tw-flex">
                                 <span class="mt-2 text-dark mr-1 tw-hidden lg:tw-block">Search:</span>
-                                <input wire:model="searchTerm" type="search" class="form-control tw-rounded-lg ml-auto"
+                                <input wire:model="searchTerm" type="search" class="form-control tw-rounded-md ml-auto"
                                     placeholder="Search here.." wire:model='searchTerm'>
                             </div>
                         </div>
@@ -104,7 +104,7 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="nama_satuan">Nama Satuan</label>
-                            <input type="text" wire:model="nama_satuan" id="nama_satuan" class="form-control">
+                            <input type="text" wire:model="nama_satuan" id="nama_satuan" class="form-control tw-rounded-lg">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -133,7 +133,7 @@
                         <input type="hidden" wire:model='dataId'>
                         <div class="form-group">
                             <label for="nama_satuan">Nama Satuan</label>
-                            <input type="text" wire:model="nama_satuan" id="nama_satuan" class="form-control">
+                            <input type="text" wire:model="nama_satuan" id="nama_satuan" class="form-control tw-rounded-lg">
                         </div>
                     </div>
                     <div class="modal-footer">

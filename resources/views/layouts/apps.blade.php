@@ -166,22 +166,27 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="nav-item dropdown">
+                                <li class="nav-item dropdown
+                                            {{ (request()->is('persediaan/daftar-stock')) ? 'active' : '' }}
+                                            {{ (request()->is('persediaan/barang-masuk')) ? 'active' : '' }}
+                                            {{ (request()->is('persediaan/barang-keluar')) ? 'active' : '' }}
+                                            {{ (request()->is('persediaan/stock-opname')) ? 'active' : '' }}
+                                           ">
                                     <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
                                         <i class="far fa-inventory"></i>
                                         <span>Persediaan</span>
                                     </a>
                                     <ul class="dropdown-menu">
-                                        <li class="nav-item">
+                                        <li class="nav-item {{ (request()->is('persediaan/daftar-stock')) ? 'active' : '' }}">
                                             <a href="{{ url('persediaan/daftar-stock') }}" class="nav-link">Daftar Stock</a>
                                         </li>
-                                        <li class="nav-item">
+                                        <li class="nav-item {{ (request()->is('persediaan/barang-masuk')) ? 'active' : '' }}">
                                             <a href="{{ url('persediaan/barang-masuk') }}" class="nav-link">Barang Masuk</a>
                                         </li>
-                                        <li class="nav-item">
+                                        <li class="nav-item {{ (request()->is('persediaan/barang-keluar')) ? 'active' : '' }}">
                                             <a href="{{ url('persediaan/barang-keluar') }}" class="nav-link">Barang Keluar</a>
                                         </li>
-                                        <li class="nav-item">
+                                        <li class="nav-item {{ (request()->is('persediaan/stock-opname')) ? 'active' : '' }}">
                                             <a href="{{ url('persediaan/stock-opname') }}" class="nav-link">Stock Opname</a>
                                         </li>
                                     </ul>

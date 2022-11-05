@@ -1,20 +1,20 @@
 <div>
-    <div class="section-header tw-rounded-lg tw-text-black">
+    <div class="section-header tw-rounded-lg tw-text-black tw-shadow-md">
         <h4 class="tw-text-lg">Data CB</h4>
     </div>
     <div class="section-body">
         <div class="row">
             <div class="col-lg-3 tw-hidden">
-                <div class="card tw-rounded-md">
+                <div class="card tw-rounded-md tw-shadow-md">
                     <div class="card-body">
                         <form>
                             <div class="form-group">
                                 <label for="nama_cb">Nama CB</label>
-                                <input type="text" class="form-control" wire:model='nama_cb' id="nama_cb">
+                                <input type="text" class="form-control tw-rounded-lg" wire:model='nama_cb' id="nama_cb">
                             </div>
                             <div class="form-group">
                                 <label for="keterangan">Keterangan</label>
-                                <textarea class="form-control" wire:model='keterangan' id="keterangan" style="height: 100px !important"></textarea>
+                                <textarea class="form-control tw-rounded-lg" wire:model='keterangan' id="keterangan" style="height: 100px !important"></textarea>
                             </div>
                             <button type="submit" wire:click.prevent="store()" wire:loading.attr="disabled"
                             class="btn btn-outline-success form-control">Save Data</button>
@@ -23,11 +23,11 @@
                 </div>
             </div>
             <div class="col-lg-9">
-                <div class="card card-primary tw-rounded-md">
+                <div class="card card-primary tw-rounded-md tw-shadow-md">
                     <div class="card-body px-0">
                         <div class="row mb-3 px-4">
                             <div class="col-4 col-lg-2 tw-flex">
-                                <select class="form-control" wire:model='lengthData'>
+                                <select class="form-control tw-rounded-lg" wire:model='lengthData'>
                                     <option value="0" selected>All</option>
                                     <option value="1" selected>1</option>
                                     <option value="5">5</option>
@@ -110,11 +110,11 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="nama_cb">Nama CB</label>
-                            <input type="text" wire:model="nama_cb" id="nama_cb" class="form-control">
+                            <input type="text" wire:model="nama_cb" id="nama_cb" class="form-control tw-rounded-lg">
                         </div>
                         <div class="form-group">
                             <label for="keterangan">Keterangan</label>
-                            <textarea wire:model="keterangan" id="keterangan" class="form-control" style="height: 100px !important;"></textarea>
+                            <textarea wire:model="keterangan" id="keterangan" class="form-control tw-rounded-lg" style="height: 100px !important;"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -143,11 +143,11 @@
                         <input type="hidden" wire:model='dataId'>
                         <div class="form-group">
                             <label for="nama_cb">Nama CB</label>
-                            <input type="text" wire:model="nama_cb" id="nama_cb" class="form-control">
+                            <input type="text" wire:model="nama_cb" id="nama_cb" class="form-control tw-rounded-lg">
                         </div>
                         <div class="form-group">
                             <label for="keterangan">Keterangan</label>
-                            <textarea wire:model="keterangan" id="keterangan" class="form-control" style="height: 100px !important;"></textarea>
+                            <textarea wire:model="keterangan" id="keterangan" class="form-control tw-rounded-lg" style="height: 100px !important;"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
