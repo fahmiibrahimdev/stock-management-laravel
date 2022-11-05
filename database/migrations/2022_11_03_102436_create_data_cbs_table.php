@@ -15,6 +15,8 @@ class CreateDataCbsTable extends Migration
     {
         Schema::create('data_cb', function (Blueprint $table) {
             $table->id();
+            $table->text('nama_cb');
+            $table->text('keterangan');
             $table->timestamps();
         });
     }

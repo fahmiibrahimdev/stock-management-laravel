@@ -2,6 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Dashboard\Dashboard;
+use App\Http\Livewire\Master\DataBarang;
+use App\Http\Livewire\Master\DataCb;
+use App\Http\Livewire\Master\Kategori;
+use App\Http\Livewire\Master\Satuan;
+use App\Http\Livewire\Persediaan\BarangMasuk;
 use App\Http\Livewire\SettingUser\SettingUser;
 
 /*
@@ -23,21 +28,13 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('dashboard', Dashboard::class)->name('dashboard');
 });
 
-Route::group(['middleware' => ['auth', 'role:boss']], function() {
-    Route::get('hahaha/', Dashboard::class)->name('');
-});
-
 Route::group(['middleware' => ['auth', 'role:supervisor']], function() {
-    Route::get('hahaha/', Dashboard::class)->name('');
+    Route::get('master/data-barang/', DataBarang::class)->name('master.data-barang');
+    Route::get('master/data-cb/', DataCb::class)->name('master.data-cb');
+    Route::get('master/kategori/', Kategori::class)->name('master.kategori');
+    Route::get('master/satuan/', Satuan::class)->name('master.satuan');
+    Route::get('persediaan/barang-masuk/', BarangMasuk::class)->name('persediaan.barang-masuk');
     Route::get('setting-user/', SettingUser::class)->name('setting-user.index');
-});
-
-Route::group(['middleware' => ['auth', 'role:karyawan']], function() {
-    Route::get('hahaha/', Dashboard::class)->name('');
-});
-
-Route::group(['middleware' => ['auth', 'role:magang']], function() {
-    Route::get('hahaha/', Dashboard::class)->name('');
 });
 
 // Route::get('/dashboard', function () {

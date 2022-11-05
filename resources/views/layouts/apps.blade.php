@@ -25,6 +25,8 @@
     <link rel="stylesheet" href="{{ asset('/fpro/css/all.css') }}">
     <link rel="stylesheet" href="{{ asset('/assets/style.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     @livewireStyles
 
     <link rel="stylesheet" href="{{ asset('/assets/css/style.css') }}">
@@ -135,26 +137,32 @@
                                 <li class="nav-item {{ (request()->is('dashboard')) ? 'active' : '' }}">
                                     <a href="{{ url('dashboard') }}" class="nav-link"><i class="far fa-fire"></i><span>Dashboard</span></a>
                                 </li>
-                                <li class="nav-item dropdown">
+                                <li class="nav-item dropdown 
+                                            {{ (request()->is('master/data-barang')) ? 'active' : '' }}
+                                            {{ (request()->is('master/data-cb')) ? 'active' : '' }}
+                                            {{ (request()->is('master/kategori')) ? 'active' : '' }}
+                                            {{ (request()->is('master/satuan')) ? 'active' : '' }}
+                                            {{ (request()->is('master/kartu-stok')) ? 'active' : '' }}
+                                          ">
                                     <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
                                         <i class="far fa-hand-holding-box"></i>
                                         <span>Master Data</span>
                                     </a>
                                     <ul class="dropdown-menu">
-                                        <li class="nav-item">
-                                            <a href="{{ url('data-barang') }}" class="nav-link">Data Barang</a>
+                                        <li class="nav-item {{ (request()->is('master/data-barang')) ? 'active' : '' }}">
+                                            <a href="{{ url('master/data-barang') }}" class="nav-link">Data Barang</a>
+                                        </li>
+                                        <li class="nav-item {{ (request()->is('master/data-cb')) ? 'active' : '' }}">
+                                            <a href="{{ url('master/data-cb') }}" class="nav-link">Data CB</a>
+                                        </li>
+                                        <li class="nav-item {{ (request()->is('master/kategori')) ? 'active' : '' }}">
+                                            <a href="{{ url('master/kategori') }}" class="nav-link">Kategori</a>
+                                        </li>
+                                        <li class="nav-item {{ (request()->is('master/satuan')) ? 'active' : '' }}">
+                                            <a href="{{ url('master/satuan') }}" class="nav-link">Satuan</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="{{ url('data-cb') }}" class="nav-link">Data CB</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{{ url('kategori') }}" class="nav-link">Kategori</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{{ url('satuan') }}" class="nav-link">Satuan</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{{ url('kartu-stok') }}" class="nav-link">Kartu Stock</a>
+                                            <a href="{{ url('master/kartu-stok') }}" class="nav-link">Kartu Stock</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -165,16 +173,16 @@
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li class="nav-item">
-                                            <a href="{{ url('daftar-stock') }}" class="nav-link">Daftar Stock</a>
+                                            <a href="{{ url('persediaan/daftar-stock') }}" class="nav-link">Daftar Stock</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="{{ url('barang-masuk') }}" class="nav-link">Barang Masuk</a>
+                                            <a href="{{ url('persediaan/barang-masuk') }}" class="nav-link">Barang Masuk</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="{{ url('barang-keluar') }}" class="nav-link">Barang Keluar</a>
+                                            <a href="{{ url('persediaan/barang-keluar') }}" class="nav-link">Barang Keluar</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="{{ url('stock-opname') }}" class="nav-link">Stock Opname</a>
+                                            <a href="{{ url('persediaan/stock-opname') }}" class="nav-link">Stock Opname</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -266,20 +274,20 @@
 			});
 			window.addEventListener("swal", function () {
 			Swal.fire({
-					title: '{{ __('messages.alert.delete.title') }}',
-					text: '{{ __('messages.alert.delete.notice') }}',
+					title: 'Apakah anda yakin?',
+					text: 'Jika kamu menghapus data tersebut, datanya tidak bisa dikembalikan',
 					icon: "warning",
 					showCancelButton: true,
 					confirmButtonColor: "#3085d6",
 					cancelButtonColor: "#d33",
-					confirmButtonText: '{{ __('messages.alert.delete.confirm') }}',
+					confirmButtonText: 'Ya, delete saja!',
 				}).then((result) => {
 					if (result.isConfirmed) {
 						livewire.emit("deleteConfirmed");
 						Swal.fire(
-							'{{ __('messages.alert.success') }}',
-							'{{ __('messages.alert.delete.deleted') }}',
-							'{{ __('messages.alert.type') }}',
+							'Berhasil',
+							'Data berhasil dihapus!',
+							'success',
 						);
 					}
 				});

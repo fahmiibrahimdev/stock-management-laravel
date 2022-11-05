@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSatuansTable extends Migration
+class CreateStockManagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,13 @@ class CreateSatuansTable extends Migration
      */
     public function up()
     {
-        Schema::create('satuan', function (Blueprint $table) {
+        Schema::create('stock_manages', function (Blueprint $table) {
             $table->id();
-            $table->text('nama_satuan');
+            $table->text('tanggal');
+            $table->text('id_barang');
+            $table->text('qty');
+            $table->text('keterangan');
+            $table->text('status');
             $table->timestamps();
         });
     }
@@ -27,6 +31,6 @@ class CreateSatuansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('satuan');
+        Schema::dropIfExists('stock_manages');
     }
 }
