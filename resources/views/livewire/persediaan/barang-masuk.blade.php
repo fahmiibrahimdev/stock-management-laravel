@@ -41,7 +41,8 @@
                     <div class="col-lg-12">
                         <div class="card tw-rounded-md tw-shadow-md">
                             <div class="card-body">
-                                <div class="form-group">
+                                <h4 class="tw-text-black tw-text-lg mb-3 text-center">F I L T E R</h4>
+                                <div class="form-group mt-3">
                                     <label for="filter_id_barang">Nama Barang</label>
                                     <div wire:ignore>
                                         <select name="filter_id_barang" id="filter_id_barang" wire:model='filter_id_barang' class="form-control tw-rounded-lg">

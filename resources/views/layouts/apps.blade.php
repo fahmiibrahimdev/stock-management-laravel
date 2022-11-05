@@ -152,6 +152,12 @@
                                         <li class="nav-item {{ (request()->is('master/data-barang')) ? 'active' : '' }}">
                                             <a href="{{ url('master/data-barang') }}" class="nav-link">Data Barang</a>
                                         </li>
+                                        <li class="nav-item {{ (request()->is('master/data-user')) ? 'active' : '' }}">
+                                            <a href="{{ url('master/data-user') }}" class="nav-link">Data User</a>
+                                        </li>
+                                        <li class="nav-item {{ (request()->is('master/divisi')) ? 'active' : '' }}">
+                                            <a href="{{ url('master/divisi') }}" class="nav-link">Divisi</a>
+                                        </li>
                                         <li class="nav-item {{ (request()->is('master/data-cb')) ? 'active' : '' }}">
                                             <a href="{{ url('master/data-cb') }}" class="nav-link">Data CB</a>
                                         </li>

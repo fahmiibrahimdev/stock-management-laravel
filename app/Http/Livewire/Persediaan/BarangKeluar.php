@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Persediaan;
 
+use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\DataBarang;
 use App\Models\StockManage;
@@ -14,6 +15,7 @@ class BarangKeluar extends Component
         'deleteConfirmed' => 'delete',
     ];
     public $tanggal, $id_barang, $qty, $keterangan;
+    public $filter_dari_tanggal, $filter_sampai_tanggal, $filter_id_barang;
     public $searchTerm, $lengthData;
     public $updateMode = false;
     public $idRemoved = null;
@@ -25,6 +27,9 @@ class BarangKeluar extends Component
         $this->id_barang = DataBarang::min('id');
         $this->qty = '1';
         $this->keterangan = '-';
+        $this->filter_dari_tanggal = Carbon::now()->startOfMonth()->format('Y-m-d');
+        $this->filter_sampai_tanggal = Carbon::now()->endOfMonth()->format('Y-m-d');
+        $this->filter_id_barang = 0;
     }
 
     public function cancel()
@@ -84,17 +89,35 @@ class BarangKeluar extends Component
 		$lengthData = $this->lengthData;
         $barangs = DataBarang::select('id', 'nama_barang')->get();
         $qty_barang = DataBarang::where('id', $this->id_barang)->first()->stock;
-        $data = StockManage::select('stock_manages.*', 'data_barang.nama_barang')
-                    ->join('data_barang', 'data_barang.id', 'stock_manages.id_barang')
-                    ->where(function($query) use ($searchTerm) {
-                        $query->where('data_barang.nama_barang', 'LIKE', $searchTerm);
-                        $query->orWhere('stock_manages.tanggal', 'LIKE', $searchTerm);
-                        $query->orWhere('stock_manages.qty', 'LIKE', $searchTerm);
-                        $query->orWhere('stock_manages.keterangan', 'LIKE', $searchTerm);
-                    })
-                    ->where('stock_manages.status', 'Out')
-				    ->orderBy('stock_manages.id', 'DESC')
-				    ->paginate($lengthData);
+
+        if( $this->filter_id_barang == 0 ) {
+            $data = StockManage::select('stock_manages.*', 'data_barang.nama_barang')
+            ->join('data_barang', 'data_barang.id', 'stock_manages.id_barang')
+            ->where(function($query) use ($searchTerm) {
+                $query->where('data_barang.nama_barang', 'LIKE', $searchTerm);
+                $query->orWhere('stock_manages.tanggal', 'LIKE', $searchTerm);
+                $query->orWhere('stock_manages.qty', 'LIKE', $searchTerm);
+                $query->orWhere('stock_manages.keterangan', 'LIKE', $searchTerm);
+            })
+            ->where('stock_manages.status', 'Out')
+            ->orderBy('stock_manages.id', 'DESC')
+            ->paginate($lengthData);
+        }  else if ( $this->filter_id_barang > 0 ) {
+            $data = StockManage::select('stock_manages.*', 'data_barang.nama_barang')
+            ->join('data_barang', 'data_barang.id', 'stock_manages.id_barang')
+            ->where(function($query) use ($searchTerm) {
+                $query->where('data_barang.nama_barang', 'LIKE', $searchTerm);
+                $query->orWhere('stock_manages.tanggal', 'LIKE', $searchTerm);
+                $query->orWhere('stock_manages.qty', 'LIKE', $searchTerm);
+                $query->orWhere('stock_manages.keterangan', 'LIKE', $searchTerm);
+            })
+            ->where('data_barang.id', $this->filter_id_barang)
+            ->whereBetween('stock_manages.created_at', [$this->filter_dari_tanggal, $this->filter_sampai_tanggal])
+            ->where('stock_manages.status', 'Out')
+            ->orderBy('stock_manages.id', 'DESC')
+            ->paginate($lengthData);
+        }
+        
 
         return view('livewire.persediaan.barang-keluar', compact('data', 'barangs', 'qty_barang'))
         ->extends('layouts.apps', ['title' => 'Persediaan - Barang Keluar']);

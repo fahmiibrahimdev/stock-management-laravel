@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Dashboard\Dashboard;
 use App\Http\Livewire\Master\DataBarang;
 use App\Http\Livewire\Master\DataCb;
+use App\Http\Livewire\Master\DataUser;
+use App\Http\Livewire\Master\Divisi;
 use App\Http\Livewire\Master\Kategori;
 use App\Http\Livewire\Master\Satuan;
 use App\Http\Livewire\Persediaan\BarangKeluar;
@@ -32,6 +34,8 @@ Route::group(['middleware' => ['auth']], function() {
 
 Route::group(['middleware' => ['auth', 'role:supervisor']], function() {
     Route::get('master/data-barang/', DataBarang::class)->name('master.data-barang');
+    Route::get('master/data-user/', DataUser::class)->name('master.data-user');
+    Route::get('master/divisi/', Divisi::class)->name('master.divisi');
     Route::get('master/data-cb/', DataCb::class)->name('master.data-cb');
     Route::get('master/kategori/', Kategori::class)->name('master.kategori');
     Route::get('master/satuan/', Satuan::class)->name('master.satuan');
