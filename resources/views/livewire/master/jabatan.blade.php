@@ -1,6 +1,6 @@
 <div>
     <div class="section-header tw-rounded-lg tw-text-black tw-shadow-md">
-        <h4 class="tw-text-lg">Satuan</h4>
+        <h4 class="tw-text-lg">Jabatan</h4>
     </div>
     <div class="section-body">
         <div class="row">
@@ -9,8 +9,8 @@
                     <div class="card-body">
                         <form>
                             <div class="form-group">
-                                <label for="nama_satuan">Nama Satuan</label>
-                                <input type="text" class="form-control tw-rounded-lg" wire:model='nama_satuan' id="nama_satuan">
+                                <label for="nama_jabatan">Nama Jabatan</label>
+                                <input type="text" class="form-control tw-rounded-lg" wire:model='nama_jabatan' id="nama_jabatan">
                             </div>
                             <button type="submit" wire:click.prevent="store()" wire:loading.attr="disabled"
                             class="btn btn-outline-success form-control">Save Data</button>
@@ -19,8 +19,8 @@
                 </div>
             </div>
             <div class="col-lg-9">
-                <div class="card card-primary tw-rounded-md">
-                    <div class="card-body px-0 tw-shadow-md">
+                <div class="card card-primary tw-rounded-md tw-shadow-md">
+                    <div class="card-body px-0">
                         <div class="row mb-3 px-4">
                             <div class="col-4 col-lg-2 tw-flex">
                                 <select class="form-control tw-rounded-lg" wire:model='lengthData'>
@@ -37,7 +37,7 @@
                             </div>
                             <div class="col-8 col-lg-4 ml-auto tw-flex">
                                 <span class="mt-2 text-dark mr-1 tw-hidden lg:tw-block">Search:</span>
-                                <input wire:model="searchTerm" type="search" class="form-control tw-rounded-md ml-auto"
+                                <input wire:model="searchTerm" type="search" class="form-control tw-rounded-lg ml-auto"
                                     placeholder="Search here.." wire:model='searchTerm'>
                             </div>
                         </div>
@@ -47,7 +47,7 @@
                                 class="tw-table-fixed tw-w-full tw-text-black tw-text-md mt-3 tw-border-collapse tw-border">
                                 <thead>
                                     <tr class="tw-border-b tw-text-xs text-center text-uppercase">
-                                        <th class="p-3">Nama Satuan</th>
+                                        <th class="p-3">Nama Jabatan</th>
                                         <th class="p-3 text-center"></th>
                                     </tr>
                                 </thead>
@@ -55,7 +55,7 @@
                                     @forelse ($data as $row)
                                     <tr
                                         class="tw-bg-white tw-border tw-text-uppercase tw-border-gray-200 hover:tw-bg-gray-50 text-center">
-                                        <td class="p-3">{{ $row->nama_satuan }}</td>
+                                        <td class="p-3">{{ $row->nama_jabatan }}</td>
                                         <td class="p-3 text-center">
                                             <button class="btn btn-primary" data-toggle="modal"
                                                 data-target="#ubahDataModal" wire:click="edit({{ $row->id }})">
@@ -103,8 +103,8 @@
                 <form>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="nama_satuan">Nama Satuan</label>
-                            <input type="text" wire:model="nama_satuan" id="nama_satuan" class="form-control tw-rounded-lg">
+                            <label for="nama_jabatan">Nama Jabatan</label>
+                            <input type="text" wire:model="nama_jabatan" id="nama_jabatan" class="form-control tw-rounded-lg">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -132,8 +132,8 @@
                     <div class="modal-body">
                         <input type="hidden" wire:model='dataId'>
                         <div class="form-group">
-                            <label for="nama_satuan">Nama Satuan</label>
-                            <input type="text" wire:model="nama_satuan" id="nama_satuan" class="form-control tw-rounded-lg">
+                            <label for="nama_jabatan">Nama Jabatan</label>
+                            <input type="text" wire:model="nama_jabatan" id="nama_jabatan" class="form-control tw-rounded-lg">
                         </div>
                     </div>
                     <div class="modal-footer">

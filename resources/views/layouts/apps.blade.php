@@ -139,24 +139,31 @@
                                 </li>
                                 <li class="nav-item dropdown 
                                             {{ (request()->is('master/data-barang')) ? 'active' : '' }}
+                                            {{ (request()->is('master/divisi')) ? 'active' : '' }}
+                                            {{ (request()->is('master/jabatan')) ? 'active' : '' }}
+                                            {{ (request()->is('master/data-user')) ? 'active' : '' }}
                                             {{ (request()->is('master/data-cb')) ? 'active' : '' }}
                                             {{ (request()->is('master/kategori')) ? 'active' : '' }}
                                             {{ (request()->is('master/satuan')) ? 'active' : '' }}
+                                            {{ (request()->is('master/kurir')) ? 'active' : '' }}
                                             {{ (request()->is('master/kartu-stok')) ? 'active' : '' }}
                                           ">
                                     <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
-                                        <i class="far fa-hand-holding-box"></i>
+                                        <i class="far fa-archive"></i>
                                         <span>Master Data</span>
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li class="nav-item {{ (request()->is('master/data-barang')) ? 'active' : '' }}">
                                             <a href="{{ url('master/data-barang') }}" class="nav-link">Data Barang</a>
                                         </li>
-                                        <li class="nav-item {{ (request()->is('master/data-user')) ? 'active' : '' }}">
-                                            <a href="{{ url('master/data-user') }}" class="nav-link">Data User</a>
-                                        </li>
                                         <li class="nav-item {{ (request()->is('master/divisi')) ? 'active' : '' }}">
                                             <a href="{{ url('master/divisi') }}" class="nav-link">Divisi</a>
+                                        </li>
+                                        <li class="nav-item {{ (request()->is('master/jabatan')) ? 'active' : '' }}">
+                                            <a href="{{ url('master/jabatan') }}" class="nav-link">Jabatan</a>
+                                        </li>
+                                        <li class="nav-item {{ (request()->is('master/data-user')) ? 'active' : '' }}">
+                                            <a href="{{ url('master/data-user') }}" class="nav-link">Data User</a>
                                         </li>
                                         <li class="nav-item {{ (request()->is('master/data-cb')) ? 'active' : '' }}">
                                             <a href="{{ url('master/data-cb') }}" class="nav-link">Data CB</a>
@@ -166,6 +173,9 @@
                                         </li>
                                         <li class="nav-item {{ (request()->is('master/satuan')) ? 'active' : '' }}">
                                             <a href="{{ url('master/satuan') }}" class="nav-link">Satuan</a>
+                                        </li>
+                                        <li class="nav-item {{ (request()->is('master/kurir')) ? 'active' : '' }}">
+                                            <a href="{{ url('master/kurir') }}" class="nav-link">Kurir</a>
                                         </li>
                                         <li class="nav-item">
                                             <a href="{{ url('master/kartu-stok') }}" class="nav-link">Kartu Stock</a>
@@ -197,14 +207,20 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="nav-item dropdown">
+                                <li class="nav-item dropdown 
+                                            {{ (request()->is('request/peminjaman-barang')) ? 'active' : '' }}
+                                            {{ (request()->is('request/pembelian-barang')) ? 'active' : '' }}
+                                          ">
                                     <a href="#" data-toggle="dropdown" class="nav-link has-dropdown">
                                         <i class="far fa-hand-holding-box"></i>
                                         <span>Request</span>
                                     </a>
                                     <ul class="dropdown-menu">
-                                        <li class="nav-item">
-                                            <a href="{{ url('peminjaman-barang') }}" class="nav-link">Peminjaman Barang</a>
+                                        <li class="nav-item {{ (request()->is('request/peminjaman-barang')) ? 'active' : '' }}">
+                                            <a href="{{ url('request/peminjaman-barang') }}" class="nav-link">Peminjaman Barang</a>
+                                        </li>
+                                        <li class="nav-item {{ (request()->is('request/pembelian-barang')) ? 'active' : '' }}">
+                                            <a href="{{ url('request/pembelian-barang') }}" class="nav-link">Pembelian Barang</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -284,7 +300,7 @@
 				$("#ubahDataModal").modal("hide");
 			});
 			window.addEventListener("swal", function () {
-			Swal.fire({
+			    Swal.fire({
 					title: 'Apakah anda yakin?',
 					text: 'Jika kamu menghapus data tersebut, datanya tidak bisa dikembalikan',
 					icon: "warning",
@@ -298,6 +314,26 @@
 						Swal.fire(
 							'Berhasil',
 							'Data berhasil dihapus!',
+							'success',
+						);
+					}
+				});
+			});
+            window.addEventListener("swalPengembalian", function () {
+			    Swal.fire({
+					title: 'Apakah anda yakin?',
+					text: 'Barang ini sudah dikembalikan ke tempat tools?',
+					icon: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#3085d6",
+					cancelButtonColor: "#d33",
+					confirmButtonText: 'Ya, sudah!',
+				}).then((result) => {
+					if (result.isConfirmed) {
+						livewire.emit("pengembalianConfirmed");
+						Swal.fire(
+							'Berhasil',
+							'Data berhasil diubah!',
 							'success',
 						);
 					}

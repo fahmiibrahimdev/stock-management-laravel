@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDivisisTable extends Migration
+class CreateKurirsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateDivisisTable extends Migration
      */
     public function up()
     {
-        Schema::create('divisi', function (Blueprint $table) {
+        Schema::create('kurir', function (Blueprint $table) {
             $table->id();
-            $table->text('kode_divisi');
-            $table->text('nama_divisi');
-            $table->text('nama_supervisor');
+            $table->text('nama_kurir');
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ class CreateDivisisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('divisi');
+        Schema::dropIfExists('kurir');
     }
 }

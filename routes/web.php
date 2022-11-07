@@ -6,11 +6,15 @@ use App\Http\Livewire\Master\DataBarang;
 use App\Http\Livewire\Master\DataCb;
 use App\Http\Livewire\Master\DataUser;
 use App\Http\Livewire\Master\Divisi;
+use App\Http\Livewire\Master\Jabatan;
 use App\Http\Livewire\Master\Kategori;
+use App\Http\Livewire\Master\Kurir;
 use App\Http\Livewire\Master\Satuan;
 use App\Http\Livewire\Persediaan\BarangKeluar;
 use App\Http\Livewire\Persediaan\BarangMasuk;
 use App\Http\Livewire\Persediaan\DaftarStock;
+use App\Http\Livewire\Request\PembelianBarang;
+use App\Http\Livewire\Request\PeminjamanBarang;
 use App\Http\Livewire\SettingUser\SettingUser;
 
 /*
@@ -36,12 +40,16 @@ Route::group(['middleware' => ['auth', 'role:supervisor']], function() {
     Route::get('master/data-barang/', DataBarang::class)->name('master.data-barang');
     Route::get('master/data-user/', DataUser::class)->name('master.data-user');
     Route::get('master/divisi/', Divisi::class)->name('master.divisi');
+    Route::get('master/jabatan/', Jabatan::class)->name('master.jabatan');
     Route::get('master/data-cb/', DataCb::class)->name('master.data-cb');
     Route::get('master/kategori/', Kategori::class)->name('master.kategori');
     Route::get('master/satuan/', Satuan::class)->name('master.satuan');
+    Route::get('master/kurir/', Kurir::class)->name('master.kurir');
     Route::get('persediaan/barang-masuk/', BarangMasuk::class)->name('persediaan.barang-masuk');
     Route::get('persediaan/barang-keluar/', BarangKeluar::class)->name('persediaan.barang-keluar');
     Route::get('persediaan/daftar-stock/', DaftarStock::class)->name('persediaan.daftar-stock');
+    Route::get('request/peminjaman-barang/', PeminjamanBarang::class)->name('request.peminjaman-barang');
+    Route::get('request/pembelian-barang/', PembelianBarang::class)->name('request.pembelian-barang');
     Route::get('setting-user/', SettingUser::class)->name('setting-user.index');
 });
 

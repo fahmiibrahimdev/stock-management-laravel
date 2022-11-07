@@ -1,0 +1,63 @@
+{
+    "status": 200,
+    "message": "Successfully tracked package",
+    "data": {
+        "summary": {
+            "awb": "8825112045716759",
+            "courier": "JNE Express",
+            "service": "REG*",
+            "status": "DELIVERED",
+            "date": "2020-09-29 01:50:00",
+            "desc": "",
+            "amount": "37.000",
+            "weight": "0.4Kg"
+        },
+        "detail": {
+            "origin": "DEPOK",
+            "destination": "PRINGSEWU, PRINGSEWU",
+            "shipper": "TASIMPORTBATAMMURAH",
+            "receiver": "RESALINA OKTARIA"
+        },
+        "history": [{
+                "date": "2020-10-02 13:33:00",
+                "desc": "DELIVERED TO [RESALINA | 02-10-2020 13:33 | PRINGSEWU, PRINGSEWU ]",
+                "location": ""
+            },
+            {
+                "date": "2020-10-02 09:09:00",
+                "desc": "WITH DELIVERY COURIER []",
+                "location": ""
+            },
+            {
+                "date": "2020-10-02 08:15:00",
+                "desc": "RECEIVED AT WAREHOUSE [PRINGSEWU, PRINGSEWU]",
+                "location": ""
+            },
+            {
+                "date": "2020-10-01 10:57:00",
+                "desc": "SHIPMENT FORWARDED TO DESTINATION [PRINGSEWU, PRINGSEWU]",
+                "location": ""
+            },
+            {
+                "date": "2020-09-30 12:43:00",
+                "desc": "RECEIVED AT WAREHOUSE [BANDARLAMPUNG]",
+                "location": ""
+            },
+            {
+                "date": "2020-09-29 22:27:00",
+                "desc": "PROCESSED AT SORTING CENTER [DEPOK]",
+                "location": ""
+            },
+            {
+                "date": "2020-09-29 10:12:00",
+                "desc": "RECEIVED AT SORTING CENTER [DEPOK]",
+                "location": ""
+            },
+            {
+                "date": "2020-09-29 01:50:00",
+                "desc": "SHIPMENT RECEIVED BY JNE COUNTER OFFICER AT [DEPOK]",
+                "location": ""
+            }
+        ]
+    }
+}

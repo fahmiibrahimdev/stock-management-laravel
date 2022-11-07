@@ -2,32 +2,29 @@
 
 namespace App\Http\Livewire\Master;
 
+use App\Models\Jabatan as ModelsJabatan;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Divisi as ModelsDivisi;
 
-class Divisi extends Component
+class Jabatan extends Component
 {
     use WithPagination;
     protected $listeners = [
         'deleteConfirmed' => 'delete',
     ];
-    public $kode_divisi, $nama_divisi, $nama_supervisor;
+    public $nama_jabatan;
     public $searchTerm, $lengthData;
     public $updateMode = false;
     public $idRemoved = null;
     protected $paginationTheme = 'bootstrap';
-
-    public function mount() {
-        $this->kode_divisi = '';
-        $this->nama_divisi = '';
-        $this->nama_supervisor = '';
-    }
     
+    public function mount() {
+        $this->nama_jabatan = '';
+    }
+
     private function resetInputFields()
     {
-        $this->nama_divisi = '';
-        $this->nama_supervisor = '';
+        $this->nama_jabatan = '';
     }
 
     public function cancel()
@@ -35,33 +32,27 @@ class Divisi extends Component
         $this->updateMode = false;
         $this->resetInputFields();
     }
-    
+
     public function render()
     {
         $searchTerm = '%'.$this->searchTerm.'%';
 		$lengthData = $this->lengthData;
 		
-		$data = ModelsDivisi::where('kode_divisi', 'LIKE', $searchTerm)
-                  ->orWhere('nama_divisi', 'LIKE', $searchTerm)
-                  ->orWhere('nama_supervisor', 'LIKE', $searchTerm)
-				  ->orderBy('id', 'ASC')
+		$data = ModelsJabatan::where('nama_jabatan', 'LIKE', $searchTerm)
+				  ->orderBy('id', 'DESC')
 				  ->paginate($lengthData);
 
-        return view('livewire.master.divisi', compact('data'))
-        ->extends('layouts.apps', ['title' => 'Divisi']);
+        return view('livewire.master.jabatan', compact('data'))
+        ->extends('layouts.apps', ['title' => 'Jabatan']);
     }
 
     public function store()
     {
         $this->validate([
-            'kode_divisi'  => 'required',
-            'nama_divisi'  => 'required',
-            'nama_supervisor'  => 'required',
+            'nama_jabatan'  => 'required'
         ]);
-        ModelsDivisi::create([
-            'kode_divisi'  => $this->kode_divisi,
-            'nama_divisi'  => $this->nama_divisi, 
-            'nama_supervisor' => $this->nama_supervisor
+        ModelsJabatan::create([
+            'nama_jabatan'  => $this->nama_jabatan
         ]);
         $this->resetInputFields();
         $this->dispatchBrowserEvent('swal:modal', [
@@ -75,27 +66,21 @@ class Divisi extends Component
     public function edit($id)
     {
         $this->updateMode = true;
-        $data = ModelsDivisi::where('id',$id)->first();
+        $data = ModelsJabatan::where('id',$id)->first();
         $this->dataId = $id;
-        $this->kode_divisi = $data->kode_divisi;
-        $this->nama_divisi = $data->nama_divisi;
-        $this->nama_supervisor = $data->nama_supervisor;
+        $this->nama_jabatan = $data->nama_jabatan;
     }
 
     public function update()
     {
         $this->validate([
-            'kode_divisi'  => 'required',
-            'nama_divisi'  => 'required',
-            'nama_supervisor'  => 'required',
+            'nama_jabatan'  => 'required',
         ]);
 
         if ($this->dataId) {
-            $data = ModelsDivisi::findOrFail($this->dataId);
+            $data = ModelsJabatan::findOrFail($this->dataId);
             $data->update([
-                'kode_divisi'  => $this->kode_divisi,
-                'nama_divisi'  => $this->nama_divisi,
-                'nama_supervisor'  => $this->nama_supervisor,
+                'nama_jabatan'  => $this->nama_jabatan,
             ]);
             $this->updateMode = false;
             $this->dispatchBrowserEvent('swal:modal', [
@@ -116,7 +101,7 @@ class Divisi extends Component
 
     public function delete()
     {
-        $data = ModelsDivisi::findOrFail($this->idRemoved);
+        $data = ModelsJabatan::findOrFail($this->idRemoved);
         $data->delete();
     }
 }

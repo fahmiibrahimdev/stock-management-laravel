@@ -2,32 +2,29 @@
 
 namespace App\Http\Livewire\Master;
 
+use App\Models\Kurir as ModelsKurir;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Divisi as ModelsDivisi;
 
-class Divisi extends Component
+class Kurir extends Component
 {
     use WithPagination;
     protected $listeners = [
         'deleteConfirmed' => 'delete',
     ];
-    public $kode_divisi, $nama_divisi, $nama_supervisor;
+    public $nama_kurir;
     public $searchTerm, $lengthData;
     public $updateMode = false;
     public $idRemoved = null;
     protected $paginationTheme = 'bootstrap';
 
     public function mount() {
-        $this->kode_divisi = '';
-        $this->nama_divisi = '';
-        $this->nama_supervisor = '';
+        $this->nama_kurir = '';
     }
-    
+
     private function resetInputFields()
     {
-        $this->nama_divisi = '';
-        $this->nama_supervisor = '';
+        $this->nama_kurir = '';
     }
 
     public function cancel()
@@ -36,32 +33,28 @@ class Divisi extends Component
         $this->resetInputFields();
     }
     
+
     public function render()
     {
         $searchTerm = '%'.$this->searchTerm.'%';
 		$lengthData = $this->lengthData;
 		
-		$data = ModelsDivisi::where('kode_divisi', 'LIKE', $searchTerm)
-                  ->orWhere('nama_divisi', 'LIKE', $searchTerm)
-                  ->orWhere('nama_supervisor', 'LIKE', $searchTerm)
-				  ->orderBy('id', 'ASC')
+		$data = ModelsKurir::where('nama_kurir', 'LIKE', $searchTerm)
+				  ->orderBy('id', 'DESC')
 				  ->paginate($lengthData);
 
-        return view('livewire.master.divisi', compact('data'))
-        ->extends('layouts.apps', ['title' => 'Divisi']);
+
+        return view('livewire.master.kurir', compact('data'))
+        ->extends('layouts.apps', ['title' => 'Kurir']);
     }
 
     public function store()
     {
         $this->validate([
-            'kode_divisi'  => 'required',
-            'nama_divisi'  => 'required',
-            'nama_supervisor'  => 'required',
+            'nama_kurir'  => 'required'
         ]);
-        ModelsDivisi::create([
-            'kode_divisi'  => $this->kode_divisi,
-            'nama_divisi'  => $this->nama_divisi, 
-            'nama_supervisor' => $this->nama_supervisor
+        ModelsKurir::create([
+            'nama_kurir'  => $this->nama_kurir
         ]);
         $this->resetInputFields();
         $this->dispatchBrowserEvent('swal:modal', [
@@ -75,27 +68,21 @@ class Divisi extends Component
     public function edit($id)
     {
         $this->updateMode = true;
-        $data = ModelsDivisi::where('id',$id)->first();
+        $data = ModelsKurir::where('id',$id)->first();
         $this->dataId = $id;
-        $this->kode_divisi = $data->kode_divisi;
-        $this->nama_divisi = $data->nama_divisi;
-        $this->nama_supervisor = $data->nama_supervisor;
+        $this->nama_kurir = $data->nama_kurir;
     }
 
     public function update()
     {
         $this->validate([
-            'kode_divisi'  => 'required',
-            'nama_divisi'  => 'required',
-            'nama_supervisor'  => 'required',
+            'nama_kurir'  => 'required',
         ]);
 
         if ($this->dataId) {
-            $data = ModelsDivisi::findOrFail($this->dataId);
+            $data = ModelsKurir::findOrFail($this->dataId);
             $data->update([
-                'kode_divisi'  => $this->kode_divisi,
-                'nama_divisi'  => $this->nama_divisi,
-                'nama_supervisor'  => $this->nama_supervisor,
+                'nama_kurir'  => $this->nama_kurir,
             ]);
             $this->updateMode = false;
             $this->dispatchBrowserEvent('swal:modal', [
@@ -116,7 +103,7 @@ class Divisi extends Component
 
     public function delete()
     {
-        $data = ModelsDivisi::findOrFail($this->idRemoved);
+        $data = ModelsKurir::findOrFail($this->idRemoved);
         $data->delete();
     }
 }

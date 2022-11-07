@@ -17,6 +17,7 @@ class CreateDataUsersTable extends Migration
             $table->id();
             $table->text('nama_user');
             $table->text('id_divisi');
+            $table->text('id_jabatan');
             $table->timestamps();
         });
     }

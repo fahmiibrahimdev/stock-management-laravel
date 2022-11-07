@@ -4,7 +4,7 @@
     </div>
     <div class="section-body">
         <div class="row">
-            <div class="col-lg-3 tw-hidden">
+            <div class="col-lg-3">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card tw-rounded-md tw-shadow-md">
@@ -170,39 +170,41 @@
                     </button>
                 </div>
                 <form>
-                    <<div class="form-group">
-                        <label for="nama_barang">Nama Barang</label>
-                        <input type="text" class="form-control tw-rounded-lg" wire:model='nama_barang' id="nama_barang">
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="id_kategori">Kategori</label>
-                                <select wire:model='id_kategori' name="id_kategori" id="id_kategori" class="form-control tw-rounded-lg">
-                                    @foreach ($kategoris as $kategori)
-                                        <option value="{{ $kategori->id }}">{{ $kategori->nama_kategori }}</option>
-                                    @endforeach
-                                </select>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="nama_barang">Nama Barang</label>
+                            <input type="text" class="form-control tw-rounded-lg" wire:model='nama_barang' id="nama_barang">
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="id_kategori">Kategori</label>
+                                    <select wire:model='id_kategori' name="id_kategori" id="id_kategori" class="form-control tw-rounded-lg">
+                                        @foreach ($kategoris as $kategori)
+                                            <option value="{{ $kategori->id }}">{{ $kategori->nama_kategori }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="id_cb">Lokasi CB</label>
+                                    <select wire:model='id_cb' name="id_cb" id="id_cb" class="form-control tw-rounded-lg">
+                                        @foreach ($cbs as $cb)
+                                            <option value="{{ $cb->id }}">{{ $cb->nama_cb }} - {{ $cb->keterangan }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="id_cb">Lokasi CB</label>
-                                <select wire:model='id_cb' name="id_cb" id="id_cb" class="form-control tw-rounded-lg">
-                                    @foreach ($cbs as $cb)
-                                        <option value="{{ $cb->id }}">{{ $cb->nama_cb }} - {{ $cb->keterangan }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                        <div class="form-group">
+                            <label for="id_satuan">Satuan</label>
+                            <select wire:model='id_satuan' name="id_satuan" id="id_satuan" class="form-control tw-rounded-lg">
+                                @foreach ($satuans as $satuan)
+                                    <option value="{{ $satuan->id }}">{{ $satuan->nama_satuan }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="id_satuan">Satuan</label>
-                        <select wire:model='id_satuan' name="id_satuan" id="id_satuan" class="form-control tw-rounded-lg">
-                            @foreach ($satuans as $satuan)
-                                <option value="{{ $satuan->id }}">{{ $satuan->nama_satuan }}</option>
-                            @endforeach
-                        </select>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

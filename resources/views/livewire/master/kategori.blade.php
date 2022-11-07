@@ -4,7 +4,7 @@
     </div>
     <div class="section-body">
         <div class="row">
-            <div class="col-lg-3 tw-hidden">
+            <div class="col-lg-3">
                 <div class="card tw-rounded-md tw-shadow-md">
                     <div class="card-body">
                         <form>

@@ -4,7 +4,7 @@
     </div>
     <div class="section-body">
         <div class="row">
-            <div class="col-lg-3 tw-hidden">
+            <div class="col-lg-3">
                 <div class="card tw-rounded-md tw-shadow-md">
                     <div class="card-body">
                         <form>
@@ -15,6 +15,10 @@
                             <div class="form-group">
                                 <label for="nama_divisi">Nama Divisi</label>
                                 <input type="text" class="form-control tw-rounded-lg" wire:model='nama_divisi' id="nama_divisi">
+                            </div>
+                            <div class="form-group">
+                                <label for="nama_supervisor">Nama Supervisor</label>
+                                <input type="text" class="form-control tw-rounded-lg" wire:model='nama_supervisor' id="nama_supervisor">
                             </div>
                             <button type="submit" wire:click.prevent="store()" wire:loading.attr="disabled"
                             class="btn btn-outline-success form-control">Save Data</button>
@@ -53,6 +57,7 @@
                                     <tr class="tw-border-b tw-text-xs text-center text-uppercase">
                                         <th class="p-3">Kode Divisi</th>
                                         <th class="p-3">Nama Divisi</th>
+                                        <th class="p-3">Nama Supervisor</th>
                                         <th class="p-3 text-center"></th>
                                     </tr>
                                 </thead>
@@ -62,6 +67,7 @@
                                         class="tw-bg-white tw-border tw-text-uppercase tw-border-gray-200 hover:tw-bg-gray-50 text-center">
                                         <td class="p-3">{{ $row->kode_divisi }}</td>
                                         <td class="p-3">{{ $row->nama_divisi }}</td>
+                                        <td class="p-3">{{ $row->nama_supervisor }}</td>
                                         <td class="p-3 text-center">
                                             <button class="btn btn-primary" data-toggle="modal"
                                                 data-target="#ubahDataModal" wire:click="edit({{ $row->id }})">
@@ -116,6 +122,10 @@
                             <label for="nama_divisi">Nama Divisi</label>
                             <input type="text" class="form-control tw-rounded-lg" wire:model='nama_divisi' id="nama_divisi">
                         </div>
+                        <div class="form-group">
+                            <label for="nama_supervisor">Nama Supervisor</label>
+                            <input type="text" class="form-control tw-rounded-lg" wire:model='nama_supervisor' id="nama_supervisor">
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -148,6 +158,10 @@
                         <div class="form-group">
                             <label for="nama_divisi">Nama Divisi</label>
                             <input type="text" class="form-control tw-rounded-lg" wire:model='nama_divisi' id="nama_divisi">
+                        </div>
+                        <div class="form-group">
+                            <label for="nama_supervisor">Nama Supervisor</label>
+                            <input type="text" class="form-control tw-rounded-lg" wire:model='nama_supervisor' id="nama_supervisor">
                         </div>
                     </div>
                     <div class="modal-footer">
